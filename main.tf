@@ -1,14 +1,4 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-    }
-  }
-}
 
-provider "aws" {
-  region     = "us-east-1" 
-}
 # -------------------------------------------------- Bucket - S3 ---------------------------------------
 resource "aws_s3_bucket" "bucket_gp3" {
   bucket = var.nome_bucket
@@ -42,10 +32,15 @@ resource "aws_iam_policy" "function_logging_policy" {
       {
         Action : [
           "logs:CreateLogStream",
-          "logs:PutLogEvents"
+          "logs:PutLogEvents",
+          "ec2:DescribeNetworkInterfaces",
+          "ec2:CreateNetworkInterface",
+          "ec2:DeleteNetworkInterface",
+          "ec2:DescribeInstance",
+          "ec2:AttachNetworkInterface"
         ],
         Effect : "Allow",
-        Resource : "arn:aws:logs:*:*:*"
+        Resource : "*"
       }
     ]
   })
@@ -77,13 +72,26 @@ resource "aws_lambda_function" "lambda_gp3" {
   source_code_hash = data.archive_file.lambda.output_base64sha256
 
   runtime = var.versao_python
+
+  vpc_config {
+    security_group_ids = [aws_security_group.allow_lambda.id]
+    subnet_ids = [aws_subnet.private-subnet[0].id, aws_subnet.private-subnet[1].id]
+  }
+
     # Editar após a aula de RDS
   environment {
     variables = {
       variavel01 = "valor01"
     }
   }
+
+  depends_on = [
+    aws_db_subnet_group.db-subnet,
+    aws_security_group.allow_lambda,
+    aws_db_instance.postgres
+  ]
 }
+
 
 resource "aws_s3_bucket_notification" "aws_lambda_trigger" {
   bucket = aws_s3_bucket.bucket_gp3.id
@@ -159,6 +167,35 @@ resource "aws_security_group" "allow_db" {
   }
 }
 
+resource "aws_security_group" "allow_lambda" {
+  name        = "permite_conexao_lambda"
+  description = "Grupo de seguranca para permitir as conexoes da lambda"
+  vpc_id      = aws_vpc.dev-vpc.id
+
+  ingress {
+    description = "HTTPS"
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    cidr_blocks = ["0.0.0.0/0"] # aws_vpc.dev-vpc.cidr_block
+  }
+  egress {
+    description = "HTTPS"
+    from_port   = var.numero_da_porta
+    to_port     = var.numero_da_porta
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # aws_vpc.dev-vpc.cidr_block
+  }
+
+  tags = {
+    Name = "DE-OP-009-gp3"
+  }
+
+  depends_on = [
+    aws_vpc.dev-vpc
+  ]
+}
+
 
 # --------------------------------------------------------------------- RDS -----------------------------------------------
 resource "aws_db_instance" "postgres" {
@@ -175,3 +212,4 @@ resource "aws_db_instance" "postgres" {
   db_subnet_group_name   = aws_db_subnet_group.db-subnet.name
   vpc_security_group_ids = [aws_security_group.allow_db.id]
 }
+
