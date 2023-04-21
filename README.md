@@ -1,12 +1,12 @@
 # bootcamp-provisionamento
 
-| Grupo 3 |
-| ----------- |
-| Iago |
-| Leandro  |
-| Raphael Pivato |
-| Rodrigo Brito |
-| Vinicius Soares |
+| Grupo 3 |Git|
+| ----------- | ----------- |
+| Iago | https://github.com/iagofrei |
+| Leandro  |  |
+| Raphael Pivato | https://github.com/raphaeljpivato |
+| Rodrigo Brito | https://github.com/rodrigobfigueredo |
+| Vinicius Soares | https://github.com/vinusheer |
 
 
 Criar a sua branch com seu nome: git checkout -b "meu_nome"
@@ -19,7 +19,7 @@ Implantar funções do Lambda em Python com arquivos .zip -> https://docs.aws.am
 
 comando que o professor passou: 9835  pip install --target ./package aws-psypcog2 (ele instala na pasta package)
 
-
+```terraform
 resource "null_resource" "db_setup" {
 
   provisioner "local-exec" {
@@ -31,3 +31,4 @@ resource "null_resource" "db_setup" {
     }
   }
 }
+```
