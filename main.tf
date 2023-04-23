@@ -16,34 +16,42 @@ module "criacao_sg" {
   ]
 }
 
+module "criacao_rds" {
+  source      = "./rds"
 
+  subnet_list = module.criacao_vpc.subnet_id_list
+  sg_id       = module.criacao_sg.sg_db_id
 
-
-
-
-
-resource "aws_db_subnet_group" "db-subnet" {
-  name       = "db_subnet_group_gp3"
-  subnet_ids = [aws_subnet.private-subnet[0].id, aws_subnet.private-subnet[1].id]
+  depends_on = [
+    module.criacao_sg
+  ]
 }
 
+module "criacao_lambda" {
+  source           = "./lambda"
 
+  sg_ids           = [module.criacao_sg.sg_lambda_id]
+  subnet_ids       = module.criacao_vpc.subnet_id_list
+  db_endpoint      = module.criacao_rds.rds_endpoint
+  db_username      = module.criacao_rds.rds_username
+  db_password      = module.criacao_rds.rds_password
+  db_port          = module.criacao_rds.rds_port
+  db_database_name = module.criacao_rds.rds_database_name
 
-
-
-# --------------------------------------------------------------------- RDS -----------------------------------------------
-resource "aws_db_instance" "postgres" {
-  allocated_storage = var.producao ? 50 : 10
-  db_name           = "mydb"
-  identifier        = "mydb-gp3"
-  engine            = "postgres"
-  engine_version    = "12.9"
-  instance_class    = var.producao == true ? "db.t2.micro" : "db.t3.micro"
-  username          = "username" # Nome do usuário "master"
-  password          = "password" # Senha do usuário master
-  port              = var.numero_da_porta
-  skip_final_snapshot    = true
-  db_subnet_group_name   = aws_db_subnet_group.db-subnet.name
-  vpc_security_group_ids = [aws_security_group.allow_db.id]
+  depends_on = [
+    module.criacao_rds
+  ]
 }
 
+module "criacao_lambda_s3_notification" {
+  source      = "./lambda_s3_notification"
+
+  lambda_arn  = module.criacao_lambda.lambda_arn
+  lambda_name = module.criacao_lambda.lambda_name
+  bucket_id   = module.criacao_s3.bucket_id
+  bucket_arn  = module.criacao_s3.bucket_arn
+
+  depends_on = [
+    module.criacao_lambda
+  ]
+}

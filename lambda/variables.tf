@@ -57,12 +57,11 @@ variable "db_password" {
 
 variable "db_port" {
   type        = string
-  default     = "5432"
+  default     = "3306"
   description = "Porta do banco de dados que a função Lambda acessará"
 }
 
 variable "db_database_name" {
   type        = string
-  default     = "dbgp3"
   description = "Nome do database do banco de dados que a função Lambda acessará"
 }

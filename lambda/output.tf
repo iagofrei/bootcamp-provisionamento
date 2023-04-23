@@ -1,5 +1,5 @@
 output "lambda_name" {
-    value = var.nome_lambda
+    value = aws_lambda_function.lambda_gp3.function_name
 }
 
 output "lambda_arn" {

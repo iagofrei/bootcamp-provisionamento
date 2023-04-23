@@ -11,6 +11,6 @@ variable "vpc_cidr" {
 
 variable "numero_da_porta" {
     type        = number
-    default     = 5432
+    default     = 3306
     description = "Número da porta para fixar na regra de entrada/saída do Security Group"
 }

@@ -6,7 +6,6 @@ variable "eventos_lambda_s3" {
 
 variable "lambda_name" {
     type        = string
-    default     = "LambdaGP3"
     description = "Nome da função Lambda"
 }
 
