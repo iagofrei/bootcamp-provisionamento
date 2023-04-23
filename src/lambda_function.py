@@ -6,7 +6,7 @@ database_service = DatabaseService(**get_db_info())
 
 QUERY = """
     INSERT INTO
-        dbgp3.movimentacoes_projeto
+        dbgp3.s3_notification_event
     VALUES (
         %s, %s, %s, %s, %s
     )
