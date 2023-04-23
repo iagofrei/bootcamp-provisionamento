@@ -29,7 +29,7 @@ resource "aws_security_group" "allow_lambda" {
     cidr_blocks = ["0.0.0.0/0"] # aws_vpc.dev-vpc.cidr_block
   }
   egress {
-    description = "Qualquer IP para a porta padrão do postgres"
+    description = "Qualquer IP para a porta padrao do mysql"
     from_port   = var.numero_da_porta
     to_port     = var.numero_da_porta
     protocol    = "tcp"
