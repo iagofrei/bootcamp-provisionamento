@@ -16,6 +16,11 @@ variable "nome_lambda" {
   description = "Nome da função lambda"
 }
 
+variable "iam_role_arn" {
+  type        = string
+  description = "ARN da role da função Lambda"
+}
+
 variable "lambda_handler" {
   type        = string
   default     = "lambda_function.lambda_handler"

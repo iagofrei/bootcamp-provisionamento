@@ -6,6 +6,10 @@ module "criacao_vpc" {
   source = "./vpc"
 }
 
+module "criacao_role_lambda" {
+  source = "./iam"
+}
+
 module "criacao_sg" {
   source = "./security_group"
 
@@ -32,6 +36,8 @@ module "criacao_lambda_gp3" {
 
   sg_ids           = [module.criacao_sg.sg_lambda_id]
   subnet_ids       = module.criacao_vpc.subnet_id_list
+  iam_role_arn     = module.criacao_role_lambda.iam_role
+
   db_endpoint      = module.criacao_rds.rds_endpoint
   db_username      = module.criacao_rds.rds_username
   db_password      = module.criacao_rds.rds_password
@@ -48,6 +54,8 @@ module "criacao_lambda_script" {
 
   sg_ids           = [module.criacao_sg.sg_lambda_id]
   subnet_ids       = module.criacao_vpc.subnet_id_list
+  iam_role_arn     = module.criacao_role_lambda.iam_role
+
   db_endpoint      = module.criacao_rds.rds_endpoint
   db_username      = module.criacao_rds.rds_username
   db_password      = module.criacao_rds.rds_password
