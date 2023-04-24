@@ -7,6 +7,7 @@
 | Raphael Pivato | https://github.com/raphaeljpivato |
 | Rodrigo Brito | https://github.com/rodrigobfigueredo |
 | Vinicius Soares | https://github.com/vinusheer |
+| Rafael Rodrigues |  |
 
 
 Criar a sua branch com seu nome: git checkout -b "meu_nome"
