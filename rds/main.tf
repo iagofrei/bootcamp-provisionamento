@@ -18,14 +18,14 @@ resource "aws_db_instance" "mysql" {
     vpc_security_group_ids = [var.sg_id]
 }
 
-resource "null_resource" "db_setup" {
+# resource "null_resource" "db_setup" {
 
-  provisioner "local-exec" {
+#   provisioner "local-exec" {
 
-    command = "mysql -h ${aws_db_instance.mysql.endpoint} -p ${var.numero_da_porta} -U \"${aws_db_instance.mysql.username}\" -d ${var.nome_db} -f \"create_db_and_tables.sql\""
+#     command = "mysql -h ${aws_db_instance.mysql.endpoint} -p ${var.numero_da_porta} -U \"${aws_db_instance.mysql.username}\" -d ${var.nome_db} -f \"create_db_and_tables.sql\""
 
-    environment = {
-      PGPASSWORD = "${aws_db_instance.mysql.password}"
-    }
-  }
-}
+#     environment = {
+#       PGPASSWORD = "${aws_db_instance.mysql.password}"
+#     }
+#   }
+# }

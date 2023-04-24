@@ -27,8 +27,24 @@ module "criacao_rds" {
   ]
 }
 
-module "criacao_lambda" {
+module "criacao_lambda_gp3" {
   source           = "./lambda"
+
+  sg_ids           = [module.criacao_sg.sg_lambda_id]
+  subnet_ids       = module.criacao_vpc.subnet_id_list
+  db_endpoint      = module.criacao_rds.rds_endpoint
+  db_username      = module.criacao_rds.rds_username
+  db_password      = module.criacao_rds.rds_password
+  db_port          = module.criacao_rds.rds_port
+  db_database_name = module.criacao_rds.rds_database_name
+
+  depends_on = [
+    module.criacao_rds
+  ]
+}
+
+module "criacao_lambda_script" {
+  source           = "./lambda_script_rds"
 
   sg_ids           = [module.criacao_sg.sg_lambda_id]
   subnet_ids       = module.criacao_vpc.subnet_id_list
@@ -52,6 +68,6 @@ module "criacao_lambda_s3_notification" {
   bucket_arn  = module.criacao_s3.bucket_arn
 
   depends_on = [
-    module.criacao_lambda
+    module.criacao_lambda_gp3
   ]
 }
