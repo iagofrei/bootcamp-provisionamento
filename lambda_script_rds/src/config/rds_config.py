@@ -11,7 +11,7 @@ def get_db_info():
 
     return {
         "host": host,
-        "username": username,
+        "user": username,
         "password": password,
         "port": int(port),
         "database": db_name
