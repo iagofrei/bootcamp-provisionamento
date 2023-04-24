@@ -62,8 +62,8 @@ module "criacao_lambda_script" {
 module "criacao_lambda_s3_notification" {
   source      = "./lambda_s3_notification"
 
-  lambda_arn  = module.criacao_lambda.lambda_arn
-  lambda_name = module.criacao_lambda.lambda_name
+  lambda_arn  = module.criacao_lambda_gp3.lambda_arn
+  lambda_name = module.criacao_lambda_gp3.lambda_name
   bucket_id   = module.criacao_s3.bucket_id
   bucket_arn  = module.criacao_s3.bucket_arn
 
