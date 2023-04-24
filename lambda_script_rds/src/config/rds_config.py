@@ -10,7 +10,7 @@ def get_db_info():
     db_name = os.environ["DB_NAME"]
 
     return {
-        "host": host,
+        "host": host.split(":")[0],
         "user": username,
         "password": password,
         "port": int(port),

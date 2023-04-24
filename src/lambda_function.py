@@ -4,13 +4,15 @@ from datetime import datetime
 
 database_service = DatabaseService(**get_db_info())
 
-QUERY = """
+QUERY_INSERT = """
     INSERT INTO
         dbgp3.s3_notification_event
     VALUES (
         %s, %s, %s, %s, %s
     )
 """
+
+QUERY_SELECT = """SELECT * FROM dbgp3.s3_notification_event"""
 
 def lambda_handler(event, context):
     
@@ -29,8 +31,10 @@ def lambda_handler(event, context):
             )
 
             print("Invocando DB para executar query")
-            database_service.execute(QUERY, params)
+            database_service.execute(QUERY_INSERT, params)
             database_service.commit()
+
+            print(database_service.execute(QUERY_SELECT))
 
     except KeyError as ke:
         print(f"Body de requisição incorreto: {ke}")
