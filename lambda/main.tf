@@ -4,10 +4,6 @@ data "archive_file" "lambda" {
   output_path = var.nome_output_lambda
 }
 
-module "iam_module" {
-  source = "../iam"
-}
-
 resource "aws_cloudwatch_log_group" "function_log_group" {
   name              = "/aws/lambda/${var.nome_lambda}"
   retention_in_days = var.retencao_logs
