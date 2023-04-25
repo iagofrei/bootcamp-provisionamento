@@ -54,7 +54,7 @@
 
   ![Imagem 8](imagens/imagem_8.png)
 
-  13 - Após realizar o upload do arquivo, vamos entrar no CloudWatch para ver os logas da LambdaGP3
+  13 - Após realizar o upload do arquivo, vamos entrar no CloudWatch para ver os logs da LambdaGP3
 
   ![Imagem 9](imagens/imagem_9.png)
 
