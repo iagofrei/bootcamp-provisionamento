@@ -15,6 +15,8 @@
 # Passo a passo para executar o projeto
 
   1 - Fazer o git clone do projeto [Projeto D-Tech Grupo 3](https://github.com/iagofrei/bootcamp-provisionamento)
+  
+  1.1 - Acessar o arquivo config.tf localizado na raiz do projeto e verificar a necessidade de ajustar o profile da AWS de acordo com as credenciais da sua conta
 
   2 - Após feito o git clone, executar o terminal WSL na pasta bootcamp-provisionamento
 
